@@ -11,6 +11,10 @@ tentativas = 20
 while jogo:
     print('Comandos:\n \tDica\t- Mostra as dica diponíveis.\n\tInventario\t- Mostra sua posição\n\tDesisto\t- desiste do jogo')
     comando = input('Digite um comando ou um palpite: ')
+    #         Caso acabe as tentativas
+    if tentativas <= 0:
+        jogo = False
+
 
 
     #       comando de dicas
@@ -25,35 +29,35 @@ while jogo:
 
         if escolha == 1:
             tentativas -= 4
-            if tentativas <= 0:
+            if tentativas <= 3:
                 print('Você não possue tentativas o suficiente para comprar esta dica!')
             else:
                 print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a cor da bandeira
 
         if escolha == 2:
             tentativas -= 3
-            if tentativas <= 0:
+            if tentativas <= 2:
                 print('Você não possue tentativas o suficiente para comprar esta dica!')
             else:
                 print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a letra da capital
 
         if escolha == 3:
             tentativas -= 6
-            if tentativas <= 0:
+            if tentativas <= 5:
                 print('Você não possue tentativas o suficiente para comprar esta dica!')
             else:
                 print('\n\tDistâncias:\n\tDicas:')
 
         if escolha == 4:
             tentativas -= 5
-            if tentativas <= 0:
+            if tentativas <= 4:
                 print('Você não possue tentativas o suficiente para comprar esta dica!')
             else:
                 print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a população
 
         if escolha == 5:
             tentativas -= 7
-            if tentativas <= 0:
+            if tentativas <= 6:
                 print('Você não possue tentativas o suficiente para comprar esta dica!')
             else:
                 print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica o continente
@@ -61,8 +65,22 @@ while jogo:
 
 #           comando de desistência
 
-    if comando.lower() == 'desisto' or tentativas == 0:    
-        jogo = False
+    if comando.lower() == 'desisto': 
+        desistindo = input('Tem certeza que deseja desistir da rodada? [s|n]')
+        if desistindo == 'n':
+            jogo = True
+        if desistindo == 's':
+            print(f'>>> Que deselegante desistir, o país era: ')#adicinar o pais no float depois do era:
+            jogo = False
+        jogarnovamente = input('Jogar novamente? [s|n]' )
+        if jogarnovamente == 's':
+            jogo = True
+        if jogarnovamente == 'n':
+            print('\n\n\tAté a próxima!')
+            jogo = False
 
+#               comando de inventario
+    if comando.lower() == 'inventario':
+        print('\n\tDistâncias:\n\tDicas:')#adicionar distancias e dicas
 
     
