@@ -48,3 +48,14 @@ def esta_na_lista(pais, lista):
             return True
     return False
 
+def sorteia_letra(pal, restr):
+    import random
+    pal = pal.lower()
+    final = []
+    ce = ['.', ',', '-', ';', ' ']
+    for letra in pal:
+        if (letra not in ce) and (letra not in restr):
+            final.append(letra)
+    if len(final) == 0:
+        return ''
+    return str(random.choice(final))
