@@ -6,7 +6,12 @@ import random
 jogo = True
 while jogo:
     # aqui é o códio principal, responsável por executar o jogo
+    #   numero total de tentativas
 
+    tentativas = 20
+    
+    # para o merdaco de dicas
+    
     #   coisas importantes para o jogo
 
     with open('inventario_dicas.txt', 'w') as invd:
@@ -16,8 +21,13 @@ while jogo:
         invp.write('Distancias:\n\t')
 
     palpites = []
+    distancias = []
     cores = []
-    cores_reveladas = []
+    
+
+    dicas_usadas = {
+
+    }
 
     #   escolha de país
     paises = base.keys()
@@ -40,27 +50,69 @@ while jogo:
     #   Loop principal
 
     rodada = True
-    tentativas = 20
+    
     while rodada:
+        with open('inventario_paises.txt', 'w') as inv:
+            inv.write('Distancias:\n\t')
+        with open('inventario_paises.txt', 'a') as inv:
+            for d in distancias:
+                inv.write(f'{d[0]} - {d[1]:.2f} km\n\t')
         with open('inventario_paises.txt', 'r') as inv:
-            invpalpites = inv.read()
+            invpaises = inv.read()
+
+        with open('inventario_dicas.txt', 'w') as inv:
+            inv.write('Dicas: \n\t')
+        with open('inventario_dicas.txt', 'a') as inv:
+            for k, v in dicas_usadas.items():
+                inv.write(f'{k}: {v}\n\t')
         with open('inventario_dicas.txt', 'r') as inv:
             invdicas = inv.read()
-        print(f'{invpalpites}\n{invdicas}')
-        print('Comandos:\n \tDica\t- Mostra as dica diponíveis.\n\tInventario\t- Mostra sua posição\n\tDesisto\t- desiste do jogo')
-        print(f'Voce possui {tentativas} tentativas')
+
+        print(f'{invpaises}\n{invdicas}')
+        print('Comandos:\n\tDica\t- Mostra as dica diponíveis.\n\tInventario\t- Mostra sua posição\n\tDesisto\t- desiste do jogo')
+        print(f'Voce possui {tentativas} tentativas!')
+
+        #   Para o mercado de dicas
+        d1 = '1|' if tentativas-4>0 else ''
+        d2 = '2|' if tentativas-3>0 else ''
+        d3 = '3|' if tentativas-6>0 else ''
+        d4 = '4|' if tentativas-5>0 else ''
+        d5 = '5|' if tentativas-7>0 else ''
+
+        D1 = '1. Cor da bandeira  - custa 4 tentativas' if tentativas-4>0 else ''
+        D2 = '2. Letra da capital - custa 3 tentativas' if tentativas-3>0 else ''
+        D3 = '3. Área             - custa 6 tentativas' if tentativas-6>0 else ''
+        D4 = '4. População        - custa 5 tentativas' if tentativas-5>0 else ''
+        D5 = '5. Continente       - custa 7 tentativas' if tentativas-7>0 else ''
+
+
+
+
+
 
         comando = input('Digite um comando ou um palpite: ')
 
         if comando in paises:
-            if comando not in palpites:
-                palpites.append(comando)
 
-            lat1 = base[comando]["geo"]["latitude"]#    latitude do palpite
-            long1 = base[comando]["geo"]["longitude"]#  longitude do palpite
-            dist = funcoes.haversine(raio, lat, long, lat1, long1)
-            with open('inventario_paises.txt', 'a') as invp:
-                invp.write(f'{comando} - {dist} km\n\t')
+            if comando not in paises and comando.lower() != 'dica' and comando.lower() == 'inventario' and comando.lower() != 'desito':
+                print('comando ou país inválido.')
+       
+            if comando not in palpites:
+                tentativas -= 1
+                lat1 = base[comando]["geo"]["latitude"]#    latitude do palpite
+                long1 = base[comando]["geo"]["longitude"]#  longitude do palpite
+                dist = funcoes.haversine(raio, lat, long, lat1, long1)
+                palpites.append(comando)
+                distancias = funcoes.adiciona_em_ordem(comando, dist, distancias)
+
+                with open('inventario_paises.txt', 'a') as invp:
+                    invp.write(f'{comando} - {dist} km\n\t')
+
+
+
+
+
+
 
 
         #         Caso acabe as tentativas
@@ -71,63 +123,90 @@ while jogo:
 
         #       comando de dicas
         if comando.lower() == 'dica': 
-            print('Mercado de Dicas \n ----------------------------------------\n\t1. Cor da bandeira  - custa 4 tentativas\n\t2. Letra da capital - custa 3 tentativas\n\t3. Área             - custa 6 tentativas\n\t4. População        - custa 5 tentativas\n\t5. Continente       - custa 7 tentativas\n\t0. Sem dica\n----------------------------------------')
+            print(f'Mercado de Dicas \n ----------------------------------------\n\t{D1}\n\t{D2}\n\t{D3}\n\t{D4}\n\t{D5}\n\t0. Sem dica\n----------------------------------------')
             
-            escolha = int(input('Escolha sua opção [0|1|2|3|4|5]: '))
+            escolha = int(input(f'Escolha sua opção [0|{d1}{d2}{d3}{d4}{d5}]: '))
             
             while escolha != 0 and escolha != 1 and escolha != 2 and escolha != 3 and escolha != 4 and escolha != 5:
                     print('Opção inválida')
-                    escolha = int(input('Escolha sua opção [0|1|2|3|4|5]: '))
+                    escolha = int(input(f'Escolha sua opção [0|{d1}{d2}{d3}{d4}{d5}]: '))
             
-            if escolha == 0:
-                print('\n\tDistâncias:\n\tDicas:')
+
+
+
+
+
+
 
             if escolha == 1:    #cor da bandeira
-                
-                if tentativas-4 <= 0:
-                    print('Você não possue tentativas o suficiente para comprar esta dica!')
-                else:
-                    cor = random.choice(cores)
-                    cores_reveladas.append(cores)
-                    cores.remove(cor)
+                if len(cores) == 0:
+                    time.sleep(0.5)
+                    print('\n\nNão há mais cores diferentes!\n')
+                    time.sleep(1)
 
-                    with open('inventario_dicas.txt', 'a') as inv:
-                        inv.write(f'Cores da bandeira: {cores_reveladas}')
 
-                    tentativas -= 4
-                    print('\n\tDistâncias:\n\tDicas:\n -Cores da bandeira: ')#adicionar ao lado da dica a cor da bandeira
+                if len(cores) > 0:
+                    if tentativas-4 <= 0:
+                        time.sleep(1)
+                        print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
+                        time.sleep(1)                   
+                    else:
+                        if 'Cores da bandeira' not in dicas_usadas:
+                            dicas_usadas['Cores da bandeira'] = []
+                        cor = random.choice(cores)
+                        dicas_usadas['Cores da bandeira'].append(cor)
+                        cores.remove(cor)
 
-            if escolha == 2:
+                        tentativas -= 4
+
+
+
+
+
+
+
+
+
+            if escolha == 2:    # letra da capital
                 
                 if tentativas -3 <= 0:
-                    print('Você não possue tentativas o suficiente para comprar esta dica!')
+                    time.sleep(1)
+                    print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
+                    time.sleep(1)
                 else:
                     tentativas -= 3
                     print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a letra da capital
 
-            if escolha == 3:
+            if escolha == 3:    # area
                 
                 if tentativas - 6 <=0:
-                    print('Você não possue tentativas o suficiente para comprar esta dica!')
+                    time.sleep(1)
+                    print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
+                    time.sleep(1)
                 else:
                     tentativas -= 6
-                    print('\n\tDistâncias:\n\tDicas:')
+                    dicas_usadas['area'] = area
+                    
 
-            if escolha == 4:
+            if escolha == 4:    # populacao
                 
                 if tentativas - 5 <= 0:
-                    print('Você não possue tentativas o suficiente para comprar esta dica!')
+                    time.sleep(1)
+                    print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
+                    time.sleep(1)
                 else:
                     tentativas -= 5
-                    print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a população
+                    dicas_usadas['populacao'] = pop
 
-            if escolha == 5:
+            if escolha == 5:    # continente
                 
                 if tentativas -7 <= 0:
-                    print('Você não possue tentativas o suficiente para comprar esta dica!')
+                    time.sleep(1)
+                    print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
+                    time.sleep(1)
                 else:
                     tentativas -= 7
-                    print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica o continente
+                    dicas_usadas['continente'] = continente
 
 
     #           comando de desistência
