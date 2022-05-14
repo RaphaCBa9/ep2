@@ -3,13 +3,13 @@ from math import *
 
 
 
-def normaliza(d):
-    n_dic = {}
-    for continente in d:
-        for carac in continente:
-            n_dic[d] = carac
-        n_dic['continente'] = continente
-    return n_dic
+def normaliza(dic):
+    ndic = {}
+    for cont, paises in dic.items():
+        for pais, info in paises.items():
+            info['continente']=cont
+            ndic[pais] = info
+    return ndic
 
 
 def sorteia_pais(paises):
