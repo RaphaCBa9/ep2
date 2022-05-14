@@ -53,7 +53,7 @@ while jogo:
         comando = input('Digite um comando ou um palpite: ')
 
         if comando in paises:
-            if comando not in palpites
+            if comando not in palpites:
                 palpites.append(comando)
 
             lat1 = base[comando]["geo"]["latitude"]#    latitude do palpite
