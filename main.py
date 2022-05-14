@@ -152,9 +152,9 @@ while jogo:
                         time.sleep(1)                   
                     else:
                         if 'Cores da bandeira' not in dicas_usadas:
-                            dicas_usadas['Cores da bandeira'] = []
+                            dicas_usadas['Cores da bandeira'] = ''
                         cor = random.choice(cores)
-                        dicas_usadas['Cores da bandeira'].append(cor)
+                        dicas_usadas['Cores da bandeira']+=f'{cor}.' if dicas_usadas['Cores da bandeira'] == '' else f', {cor}.'
                         cores.remove(cor)
 
                         tentativas -= 4
@@ -174,8 +174,19 @@ while jogo:
                     print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
                     time.sleep(1)
                 else:
-                    tentativas -= 3
-                    print('\n\tDistâncias:\n\tDicas:')#adicionar ao lado da dica a letra da capital
+                    if 'Letra da capital' not in dicas_usadas:
+                        indice = 0
+                        dicas_usadas['Letra da capital'] = capital[indice]
+                    else:
+                        indice+=1 
+                        if indice<len(capital):
+                            dicas_usadas['Letra da capital'] +=capital[indice]
+                            tentativas -= 3
+                        elif indice == len(capital):
+                            time.sleep(1)
+                            print('\nO nome da capital ja está completo!\n')
+                            time.sleep(1)
+
 
             if escolha == 3:    # area
                 
