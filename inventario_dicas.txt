@@ -1,3 +1,4 @@
 Dicas: 
-	Letra da capital: Dodoma
+	populacao: 2303697
+	continente: africa
 	

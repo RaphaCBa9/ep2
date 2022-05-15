@@ -9,7 +9,7 @@ while jogo:
     #   numero total de tentativas
 
     tentativas = 20
-    
+    qnts_tentativas = 0
     # para o merdaco de dicas
     
     #   coisas importantes para o jogo
@@ -23,8 +23,9 @@ while jogo:
     palpites = []
     distancias = []
     cores = []
-    
-
+    indice3 = 0
+    indice4 = 0
+    indice5 = 0
     dicas_usadas = {
 
     }
@@ -99,6 +100,7 @@ while jogo:
        
             if comando not in palpites:
                 tentativas -= 1
+                qnts_tentativas += 1
                 lat1 = base[comando]["geo"]["latitude"]#    latitude do palpite
                 long1 = base[comando]["geo"]["longitude"]#  longitude do palpite
                 dist = funcoes.haversine(raio, lat, long, lat1, long1)
@@ -117,8 +119,26 @@ while jogo:
 
         #         Caso acabe as tentativas
         if tentativas <= 0:
-            rodada = False
-
+            print(f'>>> Você perdeu, o país era: {pais}')
+            jogardenovo = float('Jogar novamente? [s|n]' )
+            if jogardenovo != 's' and jogardenovo != 'n':
+                print('responda com s ou n')
+                jogardenovo = float('Jogar novamente? [s|n]' )
+            if jogardenovo == 's':
+                rodada = True
+            if jogardenovo == 'n':
+                rodada = False
+        # Caso o jogador ganhe
+        if comando == pais:
+            print(f'*** Parabéns! Você acertou após {qnts_tentativas} tentativas!')
+            jogardenovo = float('Jogar novamente? [s|n]' )
+            if jogardenovo != 's' and jogardenovo != 'n':
+                print('responda com s ou n')
+                jogardenovo = float('Jogar novamente? [s|n]' )
+            if jogardenovo == 's':
+                rodada = True
+            if jogardenovo == 'n':
+                rodada = False
 
 
         #       comando de dicas
@@ -158,6 +178,7 @@ while jogo:
                         cores.remove(cor)
 
                         tentativas -= 4
+                        qnts_tentativas += 4
 
 
 
@@ -177,15 +198,19 @@ while jogo:
                     if 'Letra da capital' not in dicas_usadas:
                         indice = 0
                         dicas_usadas['Letra da capital'] = capital[indice]
+                        tentativas -= 3
+                        qnts_tentativas += 3
                     else:
                         indice+=1 
                         if indice<len(capital):
                             dicas_usadas['Letra da capital'] +=capital[indice]
                             tentativas -= 3
-                        elif indice == len(capital):
-                            time.sleep(1)
-                            print('\nO nome da capital ja está completo!\n')
-                            time.sleep(1)
+                            qnts_tentativas += 3
+
+                    if indice >= len(capital):
+                        time.sleep(1)
+                        print('\nO nome da capital ja está completo!\n')
+                        time.sleep(1)
 
 
             if escolha == 3:    # area
@@ -195,8 +220,15 @@ while jogo:
                     print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
                     time.sleep(1)
                 else:
-                    tentativas -= 6
-                    dicas_usadas['area'] = area
+                    if indice3 == 0:
+                        tentativas -= 6
+                        qnts_tentativas += 6
+                        dicas_usadas['area'] = area
+                    if indice3 > 0:
+                        time.sleep(1)
+                        print('\nA área ja foi revelada!\n')
+                        time.sleep(1)
+                    indice3 += 1
                     
 
             if escolha == 4:    # populacao
@@ -206,8 +238,15 @@ while jogo:
                     print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
                     time.sleep(1)
                 else:
-                    tentativas -= 5
-                    dicas_usadas['populacao'] = pop
+                    if indice4 == 0:
+                        tentativas -= 5
+                        qnts_tentativas += 5
+                        dicas_usadas['populacao'] = pop
+                    if indice4 > 0:
+                        time.sleep(1)
+                        print('\nA população ja foi revelada!\n')
+                        time.sleep(1)
+                    indice4 += 1
 
             if escolha == 5:    # continente
                 
@@ -216,9 +255,15 @@ while jogo:
                     print('\n\nVocê não possue tentativas o suficiente para comprar esta dica!\n')
                     time.sleep(1)
                 else:
-                    tentativas -= 7
-                    dicas_usadas['continente'] = continente
-
+                    if indice5 == 0:
+                        tentativas -= 7
+                        qnts_tentativas += 7
+                        dicas_usadas['continente'] = continente
+                    if indice5 > 0:
+                        time.sleep(1)
+                        print('\nO continente ja foi revelado!\n')
+                        time.sleep(1)
+                    indice5 += 1
 
     #           comando de desistência
 
@@ -241,6 +286,6 @@ while jogo:
 
     #               comando de inventario
         if comando.lower() == 'inventario':
-            print('\n\tDistâncias:\n\tDicas:')#adicionar distancias e dicas
+            print(f'\n\tDistâncias:{palpites}\n\tDicas:{dicas_usadas}')#adicionar distancias e dicas
 
         
