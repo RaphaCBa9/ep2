@@ -1,4 +1,2 @@
 Dicas: 
-	continente: oceania
-	populacao: 18008
 	

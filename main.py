@@ -27,7 +27,7 @@ while jogo:
     indice4 = 0
     indice5 = 0
     dicas_usadas = {
-
+    
     }
 
     #   escolha de país
@@ -57,7 +57,17 @@ while jogo:
             inv.write('Distancias:\n\t')
         with open('inventario_paises.txt', 'a') as inv:
             for d in distancias:
-                inv.write(f'{d[0]} - {d[1]:.2f} km\n\t')
+                if d[1] >= 10000:
+                    cor_texto = '\033[0;37;040m'       
+                elif d[1] < 10000 and d[1] >= 5000:
+                    cor_texto = '\033[0;31;040m'
+                elif d[1] < 5000 and d[1] >= 2500:
+                    cor_texto = '\033[0;34;040m'
+                elif d[1] < 2500 and d[1] >= 1000:
+                    cor_texto = '\033[0;36;040m'
+                elif d[1] < 1000:
+                    cor_texto = '\033[0;32;040m'
+                inv.write(f'{cor_texto}{d[0]} - {d[1]:.2f} km\033[m\n\t')
         with open('inventario_paises.txt', 'r') as inv:
             invpaises = inv.read()
 
@@ -71,7 +81,7 @@ while jogo:
 
         print(f'{invpaises}\n{invdicas}')
         print('Comandos:\n\tDica\t- Mostra as dica diponíveis.\n\tInventario\t- Mostra sua posição\n\tDesisto\t- desiste do jogo')
-        print(f'Voce possui {tentativas} tentativas!')
+        print('Voce possui {0}{1}{2} tentativas!'.format('\033[0;36;40m', tentativas,'\33[m'))
 
         #   Para o mercado de dicas
         d1 = '1|' if tentativas-4>0 else ''
@@ -93,11 +103,11 @@ while jogo:
 
         comando = input('Digite um comando ou um palpite: ')
 
-        if comando in paises:
-
-            if comando not in paises and comando.lower() != 'dica' and comando.lower() == 'inventario' and comando.lower() != 'desito':
-                print('comando ou país inválido.')
-       
+        if comando not in paises and comando.lower() != 'dica' and comando.lower() != 'inventario' and comando.lower() != 'desisto':
+                time.sleep(0.5)
+                print('\n\ncomando ou país inválido.\n\n')
+                time.sleep(0.5)
+        if comando in paises:      
             if comando not in palpites:
                 tentativas -= 1
                 qnts_tentativas += 1
@@ -112,7 +122,7 @@ while jogo:
 
         # Caso o jogador ganhe
         if comando == pais:
-            print(f'*** Parabéns! ***\n\tVocê acertou após {qnts_tentativas} tentativas!')
+            print(f'\t\t\033[1;32;040m*** Parabéns! ***\033[m\n\tVocê acertou após {qnts_tentativas} tentativas!')
             jogardenovo = input('Jogar novamente? [s|n]' )
             if jogardenovo != 's' and jogardenovo != 'n':
                 print('responda com s ou n')
@@ -274,23 +284,28 @@ while jogo:
     #           comando de desistência
 
         if comando.lower() == 'desisto': 
+            desistencia = True
             desistindo = input('Tem certeza que deseja desistir da rodada? [s|n]')            
             if desistindo == 's':
-                print(f'>>> Que deselegante desistir, o país era: {pais}')#adicinar o pais no float depois do era:
-
-                jogarnovamente = input('Jogar novamente? [s|n]' )
-                if jogarnovamente == 's':
-
-                    print('\nGerando a próxima rodada...\n')
-                    time.sleep(1)
-                    rodada = False
-                if jogarnovamente == 'n':
-                    time.sleep(1)
-                    print('\nObrigado por jogar!\n')
-                    time.sleep(1)
-                    print('\tAté a próxima!')
-                    rodada = False
-                    jogo = False
+                print(f'>>> Que deselegante desistir, o país era: \033[0;31;040m{pais}\033[m')#adicinar o pais no float depois do era:
+                while desistencia == True:
+                    jogarnovamente = input('Jogar novamente? [s|n]' )
+                    if jogarnovamente == 's':
+                        print('\nGerando a próxima rodada...\n')
+                        time.sleep(1)
+                        rodada = False
+                        desistencia = False
+                    if jogarnovamente == 'n':
+                        time.sleep(1)
+                        print('\nObrigado por jogar!\n')
+                        time.sleep(1)
+                        print('\tAté a próxima!')
+                        rodada = False
+                        desistencia = False
+                        jogo = False
+                    if jogarnovamente != 'n' and jogarnovamente != 's':
+                        print('Comando invalido!')
+                        time.sleep(1)
 
     #               comando de inventario
         if comando.lower() == 'inventario':
