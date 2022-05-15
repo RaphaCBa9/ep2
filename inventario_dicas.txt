@@ -1,4 +1,2 @@
 Dicas: 
-	populacao: 2303697
-	continente: africa
 	

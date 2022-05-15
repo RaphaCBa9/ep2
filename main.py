@@ -155,7 +155,8 @@ while jogo:
 
 
 
-
+            if escolha == 0:
+                print(f'\n\tDistâncias:{palpites}\n\tDicas:{dicas_usadas}')
 
 
             if escolha == 1:    #cor da bandeira
