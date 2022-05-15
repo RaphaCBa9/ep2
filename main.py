@@ -120,25 +120,27 @@ while jogo:
         #         Caso acabe as tentativas
         if tentativas <= 0:
             print(f'>>> Você perdeu, o país era: {pais}')
-            jogardenovo = float('Jogar novamente? [s|n]' )
+            jogardenovo = input('Jogar novamente? [s|n]' )
             if jogardenovo != 's' and jogardenovo != 'n':
                 print('responda com s ou n')
-                jogardenovo = float('Jogar novamente? [s|n]' )
+                jogardenovo = input('Jogar novamente? [s|n]' )
             if jogardenovo == 's':
-                rodada = True
-            if jogardenovo == 'n':
                 rodada = False
+            if jogardenovo == 'n':
+                jogo = False
+
+
         # Caso o jogador ganhe
         if comando == pais:
-            print(f'*** Parabéns! Você acertou após {qnts_tentativas} tentativas!')
-            jogardenovo = float('Jogar novamente? [s|n]' )
+            print(f'*** Parabéns! ***\n\tVocê acertou após {qnts_tentativas} tentativas!')
+            jogardenovo = input('Jogar novamente? [s|n]' )
             if jogardenovo != 's' and jogardenovo != 'n':
                 print('responda com s ou n')
-                jogardenovo = float('Jogar novamente? [s|n]' )
+                jogardenovo = input('Jogar novamente? [s|n]' )
             if jogardenovo == 's':
-                rodada = True
-            if jogardenovo == 'n':
                 rodada = False
+            if jogardenovo == 'n':
+                jogo = False
 
 
         #       comando de dicas
@@ -155,8 +157,6 @@ while jogo:
 
 
 
-            if escolha == 0:
-                print(f'\n\tDistâncias:{palpites}\n\tDicas:{dicas_usadas}')
 
 
             if escolha == 1:    #cor da bandeira
@@ -287,6 +287,6 @@ while jogo:
 
     #               comando de inventario
         if comando.lower() == 'inventario':
-            print(f'\n\tDistâncias:{palpites}\n\tDicas:{dicas_usadas}')#adicionar distancias e dicas
+            print(f'\n\t{invdicas}\n\t{invpaises}')#adicionar distancias e dicas
 
         
