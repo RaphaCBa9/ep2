@@ -120,6 +120,9 @@ while jogo:
             if jogardenovo == 's':
                 rodada = False
             if jogardenovo == 'n':
+                print('\nO cara é brabo!\n')
+                time.sleep(1)
+                print('\nObrigado por jogar!\n')
                 rodada = False
                 jogo = False
 
