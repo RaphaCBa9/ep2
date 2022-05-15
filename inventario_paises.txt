@@ -1,3 +1,13 @@
 Distancias:
-	siria - 6384.80 km
+	guiana - 0.00 km
+	venezuela - 865.19 km
+	colombia - 1703.23 km
+	haiti - 2135.56 km
+	brasil - 2259.51 km
+	equador - 2264.61 km
+	peru - 2370.47 km
+	bolivia - 2407.01 km
+	panama - 2447.01 km
+	guatemala - 3626.43 km
+	uruguai - 4170.24 km
 	

@@ -110,26 +110,6 @@ while jogo:
                 with open('inventario_paises.txt', 'a') as invp:
                     invp.write(f'{comando} - {dist} km\n\t')
 
-
-
-
-
-
-
-
-        #         Caso acabe as tentativas
-        if tentativas <= 0:
-            print(f'>>> Você perdeu, o país era: {pais}')
-            jogardenovo = input('Jogar novamente? [s|n]' )
-            if jogardenovo != 's' and jogardenovo != 'n':
-                print('responda com s ou n')
-                jogardenovo = input('Jogar novamente? [s|n]' )
-            if jogardenovo == 's':
-                rodada = False
-            if jogardenovo == 'n':
-                jogo = False
-
-
         # Caso o jogador ganhe
         if comando == pais:
             print(f'*** Parabéns! ***\n\tVocê acertou após {qnts_tentativas} tentativas!')
@@ -140,7 +120,29 @@ while jogo:
             if jogardenovo == 's':
                 rodada = False
             if jogardenovo == 'n':
+                rodada = False
                 jogo = False
+
+
+
+
+
+
+        #         Caso acabe as tentativas
+        if tentativas == 0:
+            print(f'>>> Você perdeu, o país era: {pais}')
+            jogardenovo = input('Jogar novamente? [s|n]' )
+            if jogardenovo != 's' and jogardenovo != 'n':
+                print('responda com s ou n')
+                jogardenovo = input('Jogar novamente? [s|n]' )
+            if jogardenovo == 's':
+                rodada = False
+            if jogardenovo == 'n':
+                rodada = False
+                jogo = False
+
+
+
 
 
         #       comando de dicas
@@ -269,21 +271,23 @@ while jogo:
     #           comando de desistência
 
         if comando.lower() == 'desisto': 
-            desistindo = input('Tem certeza que deseja desistir da rodada? [s|n]')
-            if desistindo == 'n':
-                rodada = True
+            desistindo = input('Tem certeza que deseja desistir da rodada? [s|n]')            
             if desistindo == 's':
                 print(f'>>> Que deselegante desistir, o país era: {pais}')#adicinar o pais no float depois do era:
-                rodada = False
-            jogarnovamente = input('Jogar novamente? [s|n]' )
-            if jogarnovamente == 's':
-                rodada = False
-            if jogarnovamente == 'n':
-                time.sleep(1)
-                print('\nObrigado por jogar!\n')
-                time.sleep(1)
-                print('\tAté a próxima!')
-                jogo = False
+
+                jogarnovamente = input('Jogar novamente? [s|n]' )
+                if jogarnovamente == 's':
+
+                    print('\nGerando a próxima rodada...\n')
+                    time.sleep(1)
+                    rodada = False
+                if jogarnovamente == 'n':
+                    time.sleep(1)
+                    print('\nObrigado por jogar!\n')
+                    time.sleep(1)
+                    print('\tAté a próxima!')
+                    rodada = False
+                    jogo = False
 
     #               comando de inventario
         if comando.lower() == 'inventario':

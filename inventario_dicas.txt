@@ -1,4 +1,2 @@
 Dicas: 
-	area: 236800
-	continente: asia
 	
